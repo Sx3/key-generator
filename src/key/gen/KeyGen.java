@@ -24,7 +24,7 @@ public class KeyGen {
     }
     
     public static String getKey(){ 
-        return getPara1()+getPara2();
+        return getPara1().trim()+getPara2().trim();
     }
 
     private static String getPara1() {
