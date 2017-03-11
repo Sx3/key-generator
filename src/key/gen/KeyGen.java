@@ -20,10 +20,14 @@ public class KeyGen {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println(getPara1()+getPara2());
+        System.out.println(getKey());
+    }
+    
+    public static String getKey(){ 
+        return getPara1()+getPara2();
     }
 
-    public static String getPara1() {
+    private static String getPara1() {
         String result = "";
         try {
             File file = File.createTempFile("para1", ".vbs");
@@ -55,7 +59,7 @@ public class KeyGen {
         return result.trim();
     }
     
-    public static String getPara2() {
+    private static String getPara2() {
         String result = "";
         try {
             File file = File.createTempFile("para2", ".vbs");
