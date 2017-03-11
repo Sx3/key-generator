@@ -20,7 +20,7 @@ public class KeyGen {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println(getPara1());
+        System.out.println(getPara1()+getPara2());
     }
 
     public static String getPara1() {
@@ -44,6 +44,38 @@ public class KeyGen {
             Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
             BufferedReader input
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                result += line;
+            }
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.trim();
+    }
+    
+    public static String getPara2() {
+        String result = "";
+        try {
+            File file = File.createTempFile("para2", ".vbs");
+            file.deleteOnExit();
+            FileWriter fw = new java.io.FileWriter(file);
+
+            String vbs =
+                    "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\n"
+                    + "Set colItems = objWMIService.ExecQuery _ \n"
+                    + "   (\"Select * from Win32_Bios\") \n"
+                    + "For Each objItem in colItems \n"
+                    + "    Wscript.Echo objItem.SerialNumber \n"
+                    + "    exit for  ' do the first cpu only! \n"
+                    + "Next \n";
+
+            fw.write(vbs);
+            fw.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            BufferedReader input =
+                    new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while ((line = input.readLine()) != null) {
                 result += line;
